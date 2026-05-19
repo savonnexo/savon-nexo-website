@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact — Savon Nexo</title>
+<meta name="description" content="Reach out to Savon Nexo for a project, partnership, or quick question.">
+<link rel="icon" href="assets/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 56px;
+}
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+.contact-info-card {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+}
+.contact-info-card .icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--red-soft);
+  color: var(--red);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.contact-info-card .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--gray-500);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.contact-info-card .value {
+  font-size: 15px;
+  color: var(--charcoal);
+  font-weight: 600;
+}
+.contact-info-card .value a { color: var(--charcoal); }
+.contact-info-card .value a:hover { color: var(--red); }
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .row-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div data-nav-slot></div>
+
+<section class="page-header">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span>Get in touch</span>
+    <h1>Tell us what you're working on.</h1>
+    <p>Whether it's a defined project or just a question — drop us a line. We respond within one business day.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info-card">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="label">Office</div>
+            <div class="value">18336 Edison Ave<br>Chesterfield, MO 63005</div>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="label">Email</div>
+            <div class="value"><a href="mailto:info@savonnexo.com">info@savonnexo.com</a></div>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          </div>
+          <div>
+            <div class="label">Web</div>
+            <div class="value"><a href="https://www.savonnexo.com">www.savonnexo.com</a></div>
+          </div>
+        </div>
+        <div class="contact-info-card">
+          <div class="icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="label">Hours</div>
+            <div class="value">Mon–Fri, 9am – 6pm CT</div>
+          </div>
+        </div>
+      </div>
+
+      <form class="form-card" id="contact-form" novalidate>
+        <h2 style="font-family:var(--font-display);font-size:24px;color:var(--charcoal);margin-bottom:6px;">Start a conversation</h2>
+        <p style="color:var(--gray-700);margin-bottom:24px;font-size:14px;">We'll reply within one business day.</p>
+
+        <div id="form-alert"></div>
+
+        <div class="row-2">
+          <div class="field"><label>First name</label><input type="text" name="first" required></div>
+          <div class="field"><label>Last name</label><input type="text" name="last" required></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Work email</label><input type="email" name="email" required></div>
+          <div class="field"><label>Company</label><input type="text" name="company"></div>
+        </div>
+        <div class="field">
+          <label>What can we help with?</label>
+          <select name="topic">
+            <option>Business Intelligence / Dashboards</option>
+            <option>Data Analytics</option>
+            <option>AI Solutions</option>
+            <option>Web Solutions</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tell us about the project</label>
+          <textarea name="message" rows="5" placeholder="A few sentences about what you're trying to do."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Send message
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div data-footer-slot></div>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const fd = new FormData(this);
+  const data = Object.fromEntries(fd.entries());
+  if (!data.first || !data.last || !data.email) {
+    showAlert('Please fill in your name and email.', 'error');
+    return;
+  }
+  // Open email client with pre-filled message (no backend in this build)
+  const subject = `New project inquiry — ${data.first} ${data.last} (${data.company || 'Independent'})`;
+  const body =
+`Name: ${data.first} ${data.last}
+Email: ${data.email}
+Company: ${data.company || ''}
+Topic: ${data.topic}
+
+${data.message || ''}`;
+  window.location.href = `mailto:info@savonnexo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  showAlert('Opening your email client to send your message…', 'success');
+});
+
+function showAlert(msg, type) {
+  document.getElementById('form-alert').innerHTML =
+    `<div class="alert alert-${type === 'error' ? 'error' : 'success'}">${msg}</div>`;
+}
+</script>
+</body>
+</html>
