@@ -1,0 +1,41 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+site_url: https://savonnexo.com
+display_url: https://savonnexo.com
+logo_url: https://savonnexo.com/assets/logo.png
+
+collections:
+  - name: "site"
+    label: "Site Content"
+    files:
+      - file: "data/jobs.json"
+        label: "Job Postings"
+        name: "jobs"
+        fields:
+          - label: "Jobs"
+            name: "jobs"
+            widget: "list"
+            label_singular: "Job"
+            summary: "{{fields.title}} — {{fields.location}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Department", name: "department", widget: "string", default: "General" }
+              - label: "Type"
+                name: "type"
+                widget: "select"
+                options: ["Full-time", "Part-time", "Contract", "Internship"]
+                default: "Full-time"
+              - { label: "Location", name: "location", widget: "string" }
+              - label: "Posted Date"
+                name: "posted"
+                widget: "datetime"
+                format: "YYYY-MM-DD"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+              - { label: "Summary", name: "summary", widget: "text" }
+              - { label: "Active (show on Careers page)", name: "active", widget: "boolean", default: true }

@@ -1,0 +1,31 @@
+{
+  "jobs": [
+    {
+      "title": "Business Intelligence Analyst",
+      "department": "Analytics",
+      "type": "Full-time",
+      "location": "Chesterfield, MO (Hybrid)",
+      "posted": "2026-04-20",
+      "summary": "Build dashboards and reporting systems for retail clients. Translate operational questions into clear, actionable visualizations.",
+      "active": true
+    },
+    {
+      "title": "AI Solutions Engineer",
+      "department": "AI",
+      "type": "Full-time",
+      "location": "Remote (US)",
+      "posted": "2026-04-12",
+      "summary": "Design and ship AI-powered automations and insight tools for our SMB clients. Strong Python, LLM, and prompt engineering skills required.",
+      "active": true
+    },
+    {
+      "title": "Web Solutions Developer",
+      "department": "Web",
+      "type": "Full-time",
+      "location": "Chesterfield, MO",
+      "posted": "2026-03-30",
+      "summary": "Build and maintain client websites — landing pages, ecommerce content, and product visibility tooling.",
+      "active": true
+    }
+  ]
+}
