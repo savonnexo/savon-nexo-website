@@ -54,6 +54,78 @@
 @media (max-width: 700px) {
   .job-card { grid-template-columns: 1fr; }
 }
+
+/* ===== Apply modal ===== */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(15,15,16,0.55);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 500;
+  padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 560px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+.modal-head {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-head h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--charcoal);
+}
+.modal-head .for-role {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 4px;
+}
+.modal-body { padding: 24px 28px; }
+.modal-foot {
+  padding: 18px 28px;
+  border-top: 1px solid var(--gray-200);
+  display: flex; gap: 10px; justify-content: end;
+}
+.icon-x {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; border: none;
+}
+.icon-x:hover { background: var(--gray-200); color: var(--charcoal); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+.success-msg {
+  background: var(--success-soft);
+  color: var(--success);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  margin: 16px 0;
+  font-weight: 500;
+  display: none;
+}
+.success-msg.show { display: block; }
+.error-msg {
+  background: var(--red-soft);
+  color: var(--red-dark);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  margin: 16px 0;
+  font-weight: 500;
+  display: none;
+}
+.error-msg.show { display: block; }
 </style>
 </head>
 <body>
@@ -110,13 +182,79 @@
         <p>Send a note about what you do and what you'd like to work on. We read everything.</p>
       </div>
       <div class="cta-actions">
-        <a class="btn btn-primary btn-lg" href="mailto:info@savonnexo.com?subject=Open application">Email us
+        <a class="btn btn-primary btn-lg" href="contact.html">Get in touch
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ============ APPLY MODAL ============ -->
+<div class="modal-backdrop" id="apply-modal" role="dialog" aria-modal="true" aria-labelledby="apply-title">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3 id="apply-title">Apply for this role</h3>
+        <div class="for-role">Applying for: <strong id="apply-role-name">—</strong></div>
+      </div>
+      <button class="icon-x" id="apply-close" type="button" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <form
+      class="modal-body"
+      id="apply-form"
+      name="job-application"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+    >
+      <!-- Required by Netlify Forms -->
+      <input type="hidden" name="form-name" value="job-application">
+      <p hidden><label>Don't fill: <input name="bot-field" tabindex="-1"></label></p>
+      <input type="hidden" name="job-title" id="apply-job-title-input" value="">
+
+      <div class="field-row">
+        <div class="field"><label>First name</label><input type="text" name="first-name" required></div>
+        <div class="field"><label>Last name</label><input type="text" name="last-name" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Email</label><input type="email" name="email" required></div>
+        <div class="field"><label>Phone</label><input type="tel" name="phone"></div>
+      </div>
+      <div class="field">
+        <label>LinkedIn or portfolio URL <span style="color:var(--gray-500);font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+        <input type="url" name="linkedin" placeholder="https://linkedin.com/in/...">
+      </div>
+      <div class="field">
+        <label>Resume / CV <span style="color:var(--gray-500);font-weight:400;text-transform:none;letter-spacing:0;">(PDF or Word)</span></label>
+        <input type="file" name="resume" accept=".pdf,.doc,.docx" required>
+      </div>
+      <div class="field">
+        <label>Why this role?</label>
+        <textarea name="cover-letter" rows="4" placeholder="A short note about why you'd be a fit."></textarea>
+      </div>
+
+      <div class="success-msg" id="apply-success">
+        <strong>Application sent.</strong> We've received it and will be in touch soon. Thank you.
+      </div>
+      <div class="error-msg" id="apply-error">
+        Something went wrong sending your application. Please try again, or email <a href="mailto:hr@savonnexo.com" style="color:inherit;text-decoration:underline;">hr@savonnexo.com</a> directly.
+      </div>
+    </form>
+
+    <div class="modal-foot">
+      <button class="btn btn-outline" id="apply-cancel" type="button">Cancel</button>
+      <button class="btn btn-primary" id="apply-submit" type="submit" form="apply-form">
+        Send application
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div data-footer-slot></div>
 <script src="assets/app.js"></script>
@@ -139,13 +277,12 @@
     container.innerHTML = `
       <div class="empty">
         <div style="font-size:18px;font-weight:600;color:var(--charcoal);margin-bottom:8px;">No open positions right now.</div>
-        <div>Check back soon — or send us a note at <a href="mailto:info@savonnexo.com">info@savonnexo.com</a>.</div>
+        <div>Check back soon — or send us a note at <a href="mailto:hr@savonnexo.com">hr@savonnexo.com</a>.</div>
       </div>`;
   }
 
   let jobs = [];
   try {
-    // Cache-bust so we always get the latest version after a CMS publish.
     const res = await fetch('data/jobs.json?v=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) throw new Error('Could not load jobs');
     const data = await res.json();
@@ -172,12 +309,64 @@
         </div>
         <p class="summary">${escapeHtml(j.summary || '')}</p>
       </div>
-      <a class="btn btn-primary" href="mailto:info@savonnexo.com?subject=${encodeURIComponent('Application: ' + j.title)}">Apply
+      <button class="btn btn-primary" type="button" data-apply="${escapeHtml(j.title)}">Apply
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
+      </button>
     </article>
   `).join('');
+
+  // Wire up apply buttons
+  container.querySelectorAll('[data-apply]').forEach(btn => {
+    btn.addEventListener('click', () => openApply(btn.dataset.apply));
+  });
 })();
+
+/* ===== Apply modal logic ===== */
+const modal = document.getElementById('apply-modal');
+const form = document.getElementById('apply-form');
+const success = document.getElementById('apply-success');
+const error = document.getElementById('apply-error');
+const submitBtn = document.getElementById('apply-submit');
+
+function openApply(jobTitle) {
+  document.getElementById('apply-role-name').textContent = jobTitle;
+  document.getElementById('apply-job-title-input').value = jobTitle;
+  success.classList.remove('show');
+  error.classList.remove('show');
+  form.reset();
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeApply() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('apply-close').addEventListener('click', closeApply);
+document.getElementById('apply-cancel').addEventListener('click', closeApply);
+modal.addEventListener('click', e => { if (e.target === modal) closeApply(); });
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  success.classList.remove('show');
+  error.classList.remove('show');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Sending…';
+
+  try {
+    const fd = new FormData(form);
+    const res = await fetch('/', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('Submission failed');
+    success.classList.add('show');
+    form.reset();
+    setTimeout(closeApply, 2500);
+  } catch (err) {
+    console.error(err);
+    error.classList.add('show');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = 'Send application <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+  }
+});
 </script>
 </body>
 </html>

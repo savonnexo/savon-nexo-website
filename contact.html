@@ -113,9 +113,21 @@
         </div>
       </div>
 
-      <form class="form-card" id="contact-form" novalidate>
+      <form
+        class="form-card"
+        id="contact-form"
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        novalidate
+      >
         <h2 style="font-family:var(--font-display);font-size:24px;color:var(--charcoal);margin-bottom:6px;">Start a conversation</h2>
         <p style="color:var(--gray-700);margin-bottom:24px;font-size:14px;">We'll reply within one business day.</p>
+
+        <!-- Netlify Forms plumbing -->
+        <input type="hidden" name="form-name" value="contact">
+        <p hidden><label>Don't fill: <input name="bot-field" tabindex="-1"></label></p>
 
         <div id="form-alert"></div>
 
@@ -141,7 +153,7 @@
           <label>Tell us about the project</label>
           <textarea name="message" rows="5" placeholder="A few sentences about what you're trying to do."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Send message
+        <button type="submit" id="contact-submit" class="btn btn-primary btn-lg btn-block">Send message
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </button>
       </form>
@@ -152,7 +164,10 @@
 <div data-footer-slot></div>
 <script src="assets/app.js"></script>
 <script>
-document.getElementById('contact-form').addEventListener('submit', function(e) {
+const contactForm = document.getElementById('contact-form');
+const contactSubmit = document.getElementById('contact-submit');
+
+contactForm.addEventListener('submit', async function(e) {
   e.preventDefault();
   const fd = new FormData(this);
   const data = Object.fromEntries(fd.entries());
@@ -160,17 +175,25 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     showAlert('Please fill in your name and email.', 'error');
     return;
   }
-  // Open email client with pre-filled message (no backend in this build)
-  const subject = `New project inquiry — ${data.first} ${data.last} (${data.company || 'Independent'})`;
-  const body =
-`Name: ${data.first} ${data.last}
-Email: ${data.email}
-Company: ${data.company || ''}
-Topic: ${data.topic}
 
-${data.message || ''}`;
-  window.location.href = `mailto:info@savonnexo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  showAlert('Opening your email client to send your message…', 'success');
+  contactSubmit.disabled = true;
+  contactSubmit.innerHTML = 'Sending…';
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(fd).toString()
+    });
+    if (!res.ok) throw new Error('Submission failed');
+    showAlert('Thanks — your message has been sent. We will reply within one business day.', 'success');
+    contactForm.reset();
+  } catch (err) {
+    console.error(err);
+    showAlert('Something went wrong. Please try again, or email hr@savonnexo.com directly.', 'error');
+  } finally {
+    contactSubmit.disabled = false;
+    contactSubmit.innerHTML = 'Send message <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+  }
 });
 
 function showAlert(msg, type) {
